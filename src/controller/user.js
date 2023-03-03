@@ -23,22 +23,23 @@ const UsersController = {
             }
             return result;
         }
-        
-        console.log();
+        let {rows:[user]} = await ModelUser.findName(req.body.email)
+        if (user) {
+            return response(res, 404, false, "email already use", " register fail");
+          }
+        const password1 = req.body.password
+        const password2 = req.body.confirm
+        if (password1 !== password2) {
+            return response(res, 404, false, null, "password tidak sesuai")
+        }
     let data = {
         id : uuidv4(),
         name : req.body.name,
         password : bcrypt.hashSync(req.body.password),
         phone : req.body.phone,
-        role : req.body.role,
-        member : req.body.member,
         email : req.body.email,
-        photo_user : req.body.photo_user,
         refeal_code : makeid(5),
-        address : req.body.address,
-        point : req.body.point,
         otp,
-
     }
     try {
         const result = await ModelUser.addUser(data)
@@ -58,12 +59,14 @@ const UsersController = {
         if(!user){
             return response(res, 404, false, null," email not found")
         }
+        if(user.auth!==1){
+            return response(res,404,false,null,"account belum diverifikasi")
+        }
         const password = req.body.password
         const validation1 = bcrypt.compareSync(password,user.password)
         if(!validation1){
             return response(res, 404, false, null,"wrong password")
         }
-        delete user.password
         let payload = {
             id: user.id,
             fullname: user.name,
@@ -72,6 +75,22 @@ const UsersController = {
         }
         user.token = generateToken(payload)
         response(res, 200, false, user,"login success")
+    },verification: async(req,res,next) => {
+        let {rows:[user]} = await ModelUser.findName(req.body.email)
+        // if(!user){
+        //     return response(res, 404, false, null," email not found")
+        // }
+        const {otp} = req.body
+        const data = {
+            email : req.body.email
+        }
+        if (user.otp == otp) {
+            const result = await ModelUser.verif(data)
+            response(res,200,true,result,"verification account success")
+        } else {
+            return response(res, 404, false, null,"verification account fail")
+        }
+        
     }
 }
 
