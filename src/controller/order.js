@@ -8,9 +8,6 @@ const OrderController = {
             service : req.body.service,
             address : req.body.address,
             time : req.body.time,
-            payment_status : req.body.payment_status,
-            review : req.body.review,
-            order_status : req.body.order_status
         }
         try {
             const result = await ModelOrder.addOrder(data)
