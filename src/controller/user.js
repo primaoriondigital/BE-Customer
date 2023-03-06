@@ -91,6 +91,18 @@ const UsersController = {
             return response(res, 404, false, null,"verification account fail")
         }
         
+    },getProfileDetail: async(req,res,next) => {
+        try {
+            const data = {
+                id : req.params.id
+            }
+            const result = await ModelUser.findId(data)
+            response(res,200,true,result,"get profile success")
+        } catch (error) {
+            console.log(error)
+            response(res,404,false,error,"get profile fail")
+        }
+
     }
 }
 

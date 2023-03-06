@@ -37,4 +37,17 @@ const verif = (data) => {
     })
 }
 
-module.exports = {findName,addUser,verif}
+const findId = (data) => {
+    const {id} = data
+    return new Promise((resolve, reject) => {
+        Pool.query(`SELECT * FROM "user_customer" WHERE id='${id}'`,(err,result) => {
+            if (!err) {
+                resolve(result)
+            } else {
+                reject(err)
+            }
+        })
+    })
+}
+
+module.exports = {findName,addUser,verif,findId}
