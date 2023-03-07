@@ -3,6 +3,9 @@ const bcrypt = require('bcryptjs');
 const {v4: uuidv4} = require('uuid');
 const {generateToken} = require('../middleware/auth')
 const ModelUser = require("../model/user")
+const email = require('../middleware/email2')
+// import { send_mail } from "../middleware/email2";
+
 
 const UsersController = {
     register: async (req,res,next) => {
@@ -32,7 +35,7 @@ const UsersController = {
         if (password1 !== password2) {
             return response(res, 404, false, null, "password tidak sesuai")
         }
-    let data = {
+    const data = {
         id : uuidv4(),
         name : req.body.name,
         password : bcrypt.hashSync(req.body.password),
@@ -41,12 +44,34 @@ const UsersController = {
         refeal_code : makeid(5),
         otp,
     }
+    const validate = await email.send_mail(`'${data.name}'`,`${data.email}`,`'${data.otp}'`)
+    if(validate) {
+        console.log('menjalankan validate')
+    } else {
+        console.log('tidak menjalankan validate')
+    }
     try {
         const result = await ModelUser.addUser(data)
         if (result){
             console.log(result)
             response(res,200,true,true,"register success")
         }
+        // if (result) {
+        //     console.log(result);
+        //     let sendEmail = await email(
+        //       otp
+        //     );
+        //     if (sendEmail == "email not sent!") {
+        //       return response(res, 404, false, null, "register fail");
+        //     }
+        //     response(
+        //       res,
+        //       200,
+        //       true,
+        //       { email: data.email },
+        //       "register success please check your email"
+        //     );
+        //   }
     } catch (err){
         console.log(err)
         response(res,404,false,err,"register fail")
@@ -97,7 +122,7 @@ const UsersController = {
                 id : req.params.id
             }
             const result = await ModelUser.findId(data)
-            response(res,200,true,result,"get profile success")
+            response(res,200,true,result.rows,"get profile success")
         } catch (error) {
             console.log(error)
             response(res,404,false,error,"get profile fail")

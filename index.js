@@ -3,6 +3,7 @@ const { response } = require("./src/middleware/common");
 require("dotenv").config();
 const bodyParser = require('body-parser')
 const morgan = require("morgan")
+// const send_mail = require('./src/middleware/email2')
 
 const app = express()
 const mainRouter = require("./src/routes/index")
@@ -24,3 +25,6 @@ const port = process.env.PORT
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
   })
+
+  // send_mail('yanto', 'xebinob176@gpipes.com')
+
