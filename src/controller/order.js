@@ -64,25 +64,34 @@ const OrderController = {
         response(res,404,false,error,"order fail")
         }
     }, pay: async (req,res,next) => {
-        const data = {
+        const data2 = {
             id: req.query.order_id    
         }
-
+        const data1 = data2.id.replace('"','')
+        // const data = JSON.parse(data1)
+        // const eja = (dataeja) => {
+        //     return dataeja.split("")
+        // }
+        // function eja(dataeja) {
+        //     return dataeja.split("")        }
+        // module.exports = {eja:eja}
+        // const result = await eja(data)
+        console.log(data1)
         // const data1 = data.replace(2,3)
         // const nilai = data1.split("")
         // console.log("order id : ",data1)
-        let {rows:[order]} =await ModelOrder.findOrder(data)
+        let {rows:[order]} =await ModelOrder.findOrder(data2)
         console.log("ini order",order)
-        if (order.service === 'booking'){
-            await ModelOrder.readyToBook(data)
-            console.log("tahap ini 1")
-        } else {
-            await ModelOrder.Urgent(data)
-            console.log("tahap ini 2")
-        }
+        // if (order.service === 'booking'){
+        //     await ModelOrder.readyToBook(data2)
+        //     console.log("tahap ini 1")
+        // } else {
+        //     await ModelOrder.Urgent(data2)
+        //     console.log("tahap ini 2")
+        // }
         try { 
             
-            const result = await ModelOrder.payOrder(data)
+            const result = await ModelOrder.payOrder(data2)
             response(res,200,true,result,"payment success")
         } catch (error) {
             console.log(error)

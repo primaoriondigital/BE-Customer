@@ -26,10 +26,14 @@ const UsersController = {
             }
             return result;
         }
-        let {rows:[user]} = await ModelUser.findName(req.body.email)
+        const data1 = {
+            email : req.body.email,
+            phone : req.body.phone
+        }
+        let {rows:[user]} = await ModelUser.findName(data1)
         if (user) {
-            return response(res, 404, false, "email already use", " register fail");
-          }
+            return response(res, 404, false, "Email/Phone already use", "Email/Phone already use");
+          } 
         const password1 = req.body.password
         const password2 = req.body.confirm
         if (password1 !== password2) {
