@@ -168,13 +168,14 @@ const OrderController = {
         } catch (error) {
             response(res,404,false,error,"order cancel fail")
         }
-    }, Lanjut: async (req,res,next) => {
-        try {
+    }, 
+    // getStatus: async (req,res,next) => {
+    //     try {
             
-        } catch (error) {
+    //     } catch (error) {
             
-        }
-    }
+    //     }
+    // }
 }
 
 exports.OrderController = OrderController;

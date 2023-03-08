@@ -11,6 +11,7 @@ router.get("/orderdone/:id",OrderController.orderDone)
 router.get("/detail/:id",OrderController.orderDetail)
 router.get("/history/:customer_id",OrderController.getHistory)
 router.get("/cancel/:id",OrderController.Cancel)
+// router.get("/status/:token",OrderController.getStatus)
 // router.get("/lanjut",OrderController.insert.lanjut)
 
 

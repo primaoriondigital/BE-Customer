@@ -1,9 +1,9 @@
 const Pool = require("./../config/db");
 
-const findName = (data1) => {
+const findPhone = (data1) => {
     const {email,phone} = data1
     return new Promise ((resolve,reject)=>
-        Pool.query(`SELECT * FROM "user_customer" where email ='${email}' OR phone = '${phone}'`,(err,result)=>{
+        Pool.query(`SELECT * FROM "user_customer" where email ='${email}' OR phone = ${phone}`,(err,result)=>{
             if(!err){
                 resolve(result)
             } else {
@@ -12,9 +12,9 @@ const findName = (data1) => {
     }))
 }
 
-const findPhone = (phone) => {
+const findName = (email) => {
     return new Promise ((resolve,reject)=>
-        Pool.query(`SELECT * FROM "user_customer" where phone ='${phone}'`,(err,result)=>{
+        Pool.query(`SELECT * FROM "user_customer" where email ='${email}'`,(err,result)=>{
             if(!err){
                 resolve(result)
             } else {
