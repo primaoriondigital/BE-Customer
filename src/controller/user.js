@@ -44,7 +44,7 @@ const UsersController = {
         refeal_code : makeid(5),
         otp,
     }
-    const validate = await email.send_mail(`'${data.name}'`,`${data.email}`,`'${data.otp}'`)
+    const validate = await email.send_mail(`${data.name}`,`${data.email}`,`${data.otp}`)
     if(validate) {
         console.log('menjalankan validate')
     } else {
