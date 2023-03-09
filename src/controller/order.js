@@ -38,8 +38,7 @@ const OrderController = {
             "page_expiry": {
                 "duration":5,
                 "unit": "minutes"
-            },
-            "callbacks": {"finish": "http://localhost:5000/order/paid"}
+            }
         }
     try {snap.createTransaction(parameter)
         .then((transaction)=>{
@@ -68,6 +67,8 @@ const OrderController = {
             id: req.query.order_id    
         }
         const data1 = data2.id.replace('"','')
+        const data3 = data1.replace('"','')
+
         // const data = JSON.parse(data1)
         // const eja = (dataeja) => {
         //     return dataeja.split("")
@@ -76,12 +77,14 @@ const OrderController = {
         //     return dataeja.split("")        }
         // module.exports = {eja:eja}
         // const result = await eja(data)
-        console.log(data1)
+        // console.log("data",type(data3))
         // const data1 = data.replace(2,3)
         // const nilai = data1.split("")
         // console.log("order id : ",data1)
-        let {rows:[order]} =await ModelOrder.findOrder(data2)
-        console.log("ini order",order)
+        let {rows:[order]} =await ModelOrder.findOrder(data3)
+        let result =await ModelOrder.findOrder(data3)
+
+        // console.log("ini order",result)
         // if (order.service === 'booking'){
         //     await ModelOrder.readyToBook(data2)
         //     console.log("tahap ini 1")
@@ -91,7 +94,7 @@ const OrderController = {
         // }
         try { 
             
-            const result = await ModelOrder.payOrder(data2)
+            const result = await ModelOrder.payOrder(data3)
             response(res,200,true,result,"payment success")
         } catch (error) {
             console.log(error)

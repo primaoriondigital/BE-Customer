@@ -13,11 +13,12 @@ const addOrder = (data) => {
     })
 }
 
-const payOrder = (data) => {
-    const {id} = data
+const payOrder = (data3) => {
+    const {id} = data3
     return new Promise((resolve, reject) => {
         Pool.query(`UPDATE "order" SET payment_status='paid' WHERE order_id='${id}'`,(err,result)=>{
             if(!err){
+                console.log("ini data model",data3)
                 resolve(result)
             } else {
                 reject(err)
@@ -52,8 +53,8 @@ const Urgent = (data) => {
     })
 }
 
-const findOrder = (data) => {
-    const {id} = data
+const findOrder = (data3) => {
+    const {id} = data3
     return new Promise((resolve, reject) => {
         Pool.query(`SELECT * FROM "order" WHERE order_id='${id}'`,(err,result)=>{
             if(!err){
