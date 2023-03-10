@@ -153,9 +153,9 @@ const cancelOrder = (id) => {
 }
 
 const reviewOrder = (data) => {
-    const {review,id} = data
+    const {review,id,rating} = data
     return new Promise((resolve, reject) => {
-        Pool.query(`UPDATE "order" SET review='${review}' WHERE order_id='${id}'`,(err,result)=>{
+        Pool.query(`UPDATE "order" SET review='${review}',rating=${rating} WHERE order_id='${id}'`,(err,result)=>{
             if(!err){
                 resolve(result)
             } else {

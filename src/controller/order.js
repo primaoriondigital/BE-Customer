@@ -180,7 +180,8 @@ const OrderController = {
     Review: async (req,res,next) => {
         const data = {
             id : req.params.id,
-            review : req.body.review
+            review : req.body.review,
+            rating : req.body.rating
         }
         const result = await ModelOrder.reviewOrder(data)
         try {
