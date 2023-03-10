@@ -10,27 +10,48 @@ let snap = new midtransClient.Snap({
 
 const OrderController = {
     insert: async (req,res,next) => {
-        var order_id = uuidv4()
+        let digits = "0123456789";
+        let order_id = "";
+        for (let i = 0; i < 6; i++) {
+            order_id += digits[Math.floor(Math.random() * 10)];
+        }
+        // const order_id = uuidv4()
         const gross_amount = req.body.gross_amount
         const address = req.body.address
         const customer_id = req.body.customer_id
+        const email = req.body.email
+        const name = req.body.name
+        const item_name = req.body.item_name
+        const phone = req.body.phone
+        // const address = req.body.address
         const data = {
             order_id,
             customer_id,
             service : req.body.service,
             address,
             time : req.body.time,
-            gross_amount
+            gross_amount,
+            item_name
         }
         // const ini = `${order_id}`
         // const lanjut= console.log("ini lanjut")
         const link = console.log("ini berhasil")
         const parameter = {
             "transaction_details": {
-                "order_id": `"${order_id}"`,
+                "order_id": `${order_id}`,
                 "gross_amount": `${gross_amount}`
-            },"customer_details": {
-                "first_name": `"${address}"`,
+            }, "item_details" : [{
+                "name" : `${item_name}`,
+                "price" : `${gross_amount}`,
+                "quantity" : 1
+            }],
+            "customer_details": {
+                "first_name": `${name}`,
+                "email": `${email}`,
+                "phone" : `${phone}`,
+                "billing_address": {
+                    "address" : `${address}`
+                }
             },"enabled_payments": ["gopay","shopeepay"],
             // "callbacks": {
             //     "finish": link
@@ -49,7 +70,7 @@ const OrderController = {
             // transaction redirect url
             const transactionRedirectUrl = transaction.redirect_url;
             console.log('transactionRedirectUrl:',transactionRedirectUrl);
-            response(res,200,true,transactionRedirectUrl,"order success")
+            response(res,200,true,{transactionRedirectUrl,transactionToken,data},"order success")
         })
         .catch((e)=>{
             console.log('Error occured:',e.message);
@@ -63,38 +84,22 @@ const OrderController = {
         response(res,404,false,error,"order fail")
         }
     }, pay: async (req,res,next) => {
-        const data2 = {
-            id: req.query.order_id    
+        const data = {
+            id: req.body.order_id,
+            status: req.body.transaction_status
         }
-        const data1 = data2.id.replace('"','')
-        const data3 = data1.replace('"','')
-
-        // const data = JSON.parse(data1)
-        // const eja = (dataeja) => {
-        //     return dataeja.split("")
-        // }
-        // function eja(dataeja) {
-        //     return dataeja.split("")        }
-        // module.exports = {eja:eja}
-        // const result = await eja(data)
-        // console.log("data",type(data3))
-        // const data1 = data.replace(2,3)
-        // const nilai = data1.split("")
-        // console.log("order id : ",data1)
-        let {rows:[order]} =await ModelOrder.findOrder(data3)
-        let result =await ModelOrder.findOrder(data3)
-
-        // console.log("ini order",result)
+        let order =ModelOrder.findOrder(req.body.order_id)
+        console.log("ini order",order)
+        // if (data.status === "settlement")
         // if (order.service === 'booking'){
-        //     await ModelOrder.readyToBook(data2)
+        //     await ModelOrder.readyToBook(data.id)
         //     console.log("tahap ini 1")
         // } else {
-        //     await ModelOrder.Urgent(data2)
+        //     await ModelOrder.Urgent(data.id)
         //     console.log("tahap ini 2")
         // }
         try { 
-            
-            const result = await ModelOrder.payOrder(data3)
+            const result = ModelOrder.payOrder(data)
             response(res,200,true,result,"payment success")
         } catch (error) {
             console.log(error)
@@ -126,10 +131,10 @@ const OrderController = {
             id : req.params.id,
         }
         try {
-            const result = await ModelOrder.writeStatusCleaner(data)
-            response(res,200,true,result,"get cleaner success")
+            const result = await ModelOrder.writeStatusCleaner(req.params.id)
+            response(res,200,true,result.command,"order cleaner accepted")
         } catch (error) {
-            response(res,404,false,error,"get cleaner fail")
+            response(res,404,false,error,"order cleaner rejected")
         }
     },orderDone: async (req,res,next) => {
         const data = {
@@ -137,16 +142,16 @@ const OrderController = {
         }
         try {
             const result = await ModelOrder.writeOrderDone(data)
-            response(res,200,true,result,"get cleaner success")
+            response(res,200,true,result.command,"order done")
         } catch (error) {
-            response(res,404,false,error,"get cleaner fail")
+            response(res,404,false,error,"order not done")
         }
     }, orderDetail: async (req,res,next) => {
         const data = {
             id : req.params.id,
         }
         try {
-            const result = await ModelOrder.findOrder(data)
+            const result = await ModelOrder.findOrder(req.params.id)
             response(res,200,true,result.rows,"get order success")
         } catch (error) {
             response(res,404,false,error,"get order fail")
@@ -172,13 +177,28 @@ const OrderController = {
             response(res,404,false,error,"order cancel fail")
         }
     }, 
-    // getStatus: async (req,res,next) => {
-    //     try {
-            
-    //     } catch (error) {
-            
-    //     }
-    // }
+    Review: async (req,res,next) => {
+        const data = {
+            id : req.params.id,
+            review : req.body.review
+        }
+        const result = await ModelOrder.reviewOrder(data)
+        try {
+            response(res,200,true,result.command,"order review success")
+        } catch (error) {
+            response(res,404,false,error,"order cancel fail")
+        }
+    },orderRejectedCleaner: async (req,res,next) => {
+        const data = {
+            id : req.params.id,
+        }
+        try {
+            const result = await ModelOrder.writeStatusRejectedCleaner(req.params.id)
+            response(res,200,true,result.command,"order rejected cleaner")
+        } catch (error) {
+            response(res,404,false,error,"order cleaner rejected")
+        }
+    }
 }
 
 exports.OrderController = OrderController;

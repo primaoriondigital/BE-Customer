@@ -13,4 +13,15 @@ const addNotification = (data) => {
     })
 }
 
-module.exports = {addNotification}
+const getNotif = (order_id) => {
+    return new Promise((resolve, reject) => {
+        Pool.query(`SELECT transaction_status FROM "notification" where order_id='${order_id}'`,(err,result)=>{
+            if(!err){
+                resolve(result)
+            } else {
+                reject(err)
+            }
+        })
+    })
+}
+module.exports = {addNotification,getNotif}
