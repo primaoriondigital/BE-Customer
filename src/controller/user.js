@@ -103,7 +103,7 @@ const UsersController = {
             role: user.role
         }
         user.token = generateToken(payload)
-        response(res, 200, false, user,"login success")
+        response(res, 200, false, user,("login success",user))
     },verification: async(req,res,next) => {
         let {rows:[user]} = await ModelUser.findName(req.body.email)
         // if(!user){
