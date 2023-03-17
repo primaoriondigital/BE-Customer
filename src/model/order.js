@@ -3,10 +3,10 @@ const Pool = require("./../config/db");
 const addOrder = (data) => {
     const {customer_id,service,time,address,order_id,gross_amount,item_name} = data
     return new Promise((resolve, reject) => {
-        Pool.query(`INSERT INTO "order" (order_id,customer_id,payment_status,service,time,order_status,address,created_at,gross_amount,item_name) VALUES('${order_id}','${customer_id}','unpayment','${service}','${time}','waiting for payment','${address}',NOW(),'${gross_amount}','${item_name}')`,(err,result)=>{
+        Pool.query(`INSERT INTO "order" (order_id,customer_id,payment_status,service,time,order_status,address,created_at,gross_amount,item_name) VALUES('${order_id}','${customer_id}','unpayment','${service}','${time}','waiting for payment','${address}',NOW()::date,'${gross_amount}','${item_name}')`,(err,result)=>{
             if(!err){
                 resolve(result)
-            } else {
+            } else { 
                 reject(err)
             }
         })
@@ -53,7 +53,7 @@ const Urgent = (id) => {
 
 const findOrder = (id) => {
     return new Promise((resolve, reject) => {
-        Pool.query(`SELECT * FROM "order" WHERE order_id='${id}'`,(err,result)=>{
+        Pool.query(`SELECT *,"user".name as cleaner_name FROM "order" INNER JOIN "user" ON "order".cleaner_id = "user".id WHERE "order".order_id='${id}'`,(err,result)=>{
             if(!err){
                 resolve(result)
             } else {
