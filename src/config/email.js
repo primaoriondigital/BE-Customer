@@ -1,6 +1,6 @@
 module.exports = {
     user: 'primaoriondigital.prodigy@gmail.com',
-    clientId: '625061772933-cqc03d18oq25n31f4ssb40ep2nq4t933.apps.googleusercontent.com',
-    clientSecret: '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',
-    refreshToken: '1//04gYxE4SudAGLCgYIARAAGAQSNwF-L9IryZ8JDzwdY8yz7NycbKiZpzRmWdkd4QJKLfoI12RtkDC0zQWtAUKlRUDpntDdIZ_A-ro'
+    clientId: '678648448118-armb0dervkfpjrb05b8cmcp2f14krmcl.apps.googleusercontent.com',
+    clientSecret: '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',
+    refreshToken: '1//04FauC_kWPemJCgYIARAAGAQSNwF-L9IrILTeIvPUJX2-wN-6TXn8zd-hJJe5PDJac3BbRMBEHi7OQ5Ci-tT-rNOqx6c9aRqFnI8'
 }
