@@ -53,7 +53,7 @@ const Urgent = (id) => {
 
 const findOrder = (id) => {
     return new Promise((resolve, reject) => {
-        Pool.query(`SELECT *,"user".name as cleaner_name FROM "order" INNER JOIN "user" ON "order".cleaner_id = "user".id WHERE "order".order_id='${id}'`,(err,result)=>{
+        Pool.query(`SELECT * WHERE order_id='${id}'`,(err,result)=>{
             if(!err){
                 resolve(result)
             } else {
