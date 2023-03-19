@@ -53,7 +53,7 @@ const Urgent = (id) => {
 
 const findOrder = (id) => {
     return new Promise((resolve, reject) => {
-        Pool.query(`SELECT * WHERE order_id='${id}'`,(err,result)=>{
+        Pool.query(`SELECT * FROM "order" WHERE order_id='${id}'`,(err,result)=>{
             if(!err){
                 resolve(result)
             } else {
