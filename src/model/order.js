@@ -164,4 +164,6 @@ const reviewOrder = (data) => {
         })
     })
 }
+
+
 module.exports = {addOrder,payOrder,readyToBook,Urgent,findOrder,writeCleaner,writeOrderDone,writeStatusCleaner,writeStatusArea,historyOrder,cancelOrder,reviewOrder,writeStatusRejectedCleaner}

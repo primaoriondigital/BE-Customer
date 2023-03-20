@@ -58,7 +58,7 @@ const UsersController = {
         const result = await ModelUser.addUser(data)
         if (result){
             console.log(result)
-            response(res,200,true,true,"register success")
+            response(res,200,true,data,"register success")
         }
         // if (result) {
         //     console.log(result);
