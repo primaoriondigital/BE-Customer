@@ -48,34 +48,18 @@ const UsersController = {
         refeal_code : makeid(5),
         otp,
     }
-    const validate = await email.send_mail(`${data.name}`,`${data.email}`,`${data.otp}`)
-    if(validate) {
-        console.log('menjalankan validate')
-    } else {
-        console.log('tidak menjalankan validate')
-    }
     try {
         const result = await ModelUser.addUser(data)
         if (result){
+            const validate = await email.send_mail(`${data.name}`,`${data.email}`,`${data.otp}`)
+            if(validate) {
+                console.log('menjalankan validate')
+            } else {
+                console.log('tidak menjalankan validate')
+            }
             console.log(result)
             response(res,200,true,data,"register success")
         }
-        // if (result) {
-        //     console.log(result);
-        //     let sendEmail = await email(
-        //       otp
-        //     );
-        //     if (sendEmail == "email not sent!") {
-        //       return response(res, 404, false, null, "register fail");
-        //     }
-        //     response(
-        //       res,
-        //       200,
-        //       true,
-        //       { email: data.email },
-        //       "register success please check your email"
-        //     );
-        //   }
     } catch (err){
         console.log(err)
         response(res,404,false,err,"register fail")
