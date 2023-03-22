@@ -3,7 +3,7 @@ const Pool = require("./../config/db");
 const addOrder = (data) => {
     const {customer_id,service,time,address,order_id,gross_amount,item_name} = data
     return new Promise((resolve, reject) => {
-        Pool.query(`INSERT INTO "order" (order_id,customer_id,payment_status,service,time,order_status,address,created_at,gross_amount,item_name) VALUES('${order_id}','${customer_id}','unpayment','${service}','${time}','waiting for payment','${address}',NOW()::date,'${gross_amount}','${item_name}')`,(err,result)=>{
+        Pool.query(`INSERT INTO "order" (order_id,customer_id,payment_status,service,time,order_status,address,created_at,gross_amount,item_name) VALUES('${order_id}','${customer_id}','Unpayment','${service}','${time}','Waiting for Payment','${address}',NOW(),'${gross_amount}','${item_name}')`,(err,result)=>{
             if(!err){
                 resolve(result)
             } else { 
@@ -41,7 +41,7 @@ const readyToBook = (id) => {
 
 const Urgent = (id) => {
     return new Promise((resolve, reject) => {
-        Pool.query(`UPDATE "order" SET order_status='open' WHERE order_id='${id}'`,(err,result)=>{
+        Pool.query(`UPDATE "order" SET order_status='Open' WHERE order_id='${id}'`,(err,result)=>{
             if(!err){
                 resolve(result)
             } else {
@@ -66,7 +66,7 @@ const findOrder = (id) => {
 const writeCleaner = (data) => {
     const {id,cleaner_id} = data
     return new Promise((resolve, reject) => {
-        Pool.query(`UPDATE "order" SET order_status='get cleaner',cleaner_id='${cleaner_id}' WHERE order_id='${id}'`,(err,result)=>{
+        Pool.query(`UPDATE "order" SET order_status='Get Cleaner',cleaner_id='${cleaner_id}' WHERE order_id='${id}'`,(err,result)=>{
             if(!err){
                 resolve(result)
             } else {
