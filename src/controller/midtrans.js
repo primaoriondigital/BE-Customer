@@ -33,7 +33,7 @@ const MidtransController = {
                 } else {
                     var message = "sudah membayar"
                     await ModelOrder.payOrder(req.params.order_id)
-                    if (hasil2.service === 'booking'){
+                    if (hasil2.service === 'Booking'){
                         await ModelOrder.readyToBook(req.params.order_id)
                         console.log("tahap booking driver")
                     } else {

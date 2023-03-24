@@ -29,7 +29,7 @@ const payOrder = (id) => {
 
 const readyToBook = (id) => {
     return new Promise((resolve, reject) => {
-        Pool.query(`UPDATE "order" SET order_status='ready to book' WHERE order_id='${id}'`,(err,result)=>{
+        Pool.query(`UPDATE "order" SET order_status='Ready to Book' WHERE order_id='${id}'`,(err,result)=>{
             if(!err){
                 resolve(result)
             } else {
@@ -116,7 +116,7 @@ const writeStatusRejectedCleaner = (id) => {
 const writeOrderDone = (data) => {
     const {id} = data
     return new Promise((resolve, reject) => {
-        Pool.query(`UPDATE "order" SET order_status='done' WHERE order_id='${id}'`,(err,result)=>{
+        Pool.query(`UPDATE "order" SET order_status='Done' WHERE order_id='${id}'`,(err,result)=>{
             if(!err){
                 resolve(result)
             } else {
@@ -142,7 +142,7 @@ const historyOrder = (data) => {
 const cancelOrder = (id) => {
     // const {id} = data
     return new Promise((resolve, reject) => {
-        Pool.query(`UPDATE "order" SET order_status='cancel' WHERE order_id='${id}'`,(err,result)=>{
+        Pool.query(`UPDATE "order" SET order_status='Cancel' WHERE order_id='${id}'`,(err,result)=>{
             if(!err){
                 resolve(result)
             } else {
