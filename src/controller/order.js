@@ -31,7 +31,9 @@ const OrderController = {
             address,
             time : req.body.time,
             gross_amount,
-            item_name
+            item_name,
+            notes : req.body.notes,
+            voucher : req.body.voucher
         }
         // const ini = `${order_id}`
         // const lanjut= console.log("ini lanjut")
