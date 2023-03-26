@@ -165,5 +165,17 @@ const reviewOrder = (data) => {
     })
 }
 
+const findOrderCleanerName = (id) => {
+    return new Promise((resolve, reject) => {
+        Pool.query(`SELECT *,"user".name as cleaner_name FROM "order" INNER JOIN "user" ON "user".id = "order".cleaner_id WHERE "order".order_id='${id}'`,(err,result)=>{
+            if(!err){
+                resolve(result)
+            } else {
+                reject(err)
+            }
+        })
+    })
+}
 
-module.exports = {addOrder,payOrder,readyToBook,Urgent,findOrder,writeCleaner,writeOrderDone,writeStatusCleaner,writeStatusArea,historyOrder,cancelOrder,reviewOrder,writeStatusRejectedCleaner}
+
+module.exports = {addOrder,payOrder,readyToBook,Urgent,findOrder,writeCleaner,writeOrderDone,writeStatusCleaner,writeStatusArea,historyOrder,cancelOrder,reviewOrder,writeStatusRejectedCleaner,findOrderCleanerName}

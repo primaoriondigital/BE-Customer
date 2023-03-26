@@ -201,6 +201,16 @@ const OrderController = {
         } catch (error) {
             response(res,404,false,error,"order cleaner rejected")
         }
+    },orderDetailTracking: async (req,res,next) => {
+        // const data = {
+        //     id : req.params.id,
+        // }
+        try {
+            const result = await ModelOrder.findOrderCleanerName(req.params.id)
+            response(res,200,true,result.rows,"get order success")
+        } catch (error) {
+            response(res,404,false,error,"get order fail")
+        }
     }
 }
 
