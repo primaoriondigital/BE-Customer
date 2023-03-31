@@ -55,6 +55,7 @@ const OrderController = {
                     "address" : `${address}`
                 }
             },
+            // "enabled_payments": ["gopay","permata_va"],
             // "callbacks": {
             //     "finish": link
             // },
@@ -187,7 +188,7 @@ const OrderController = {
         }
         const result = await ModelOrder.reviewOrder(data)
         try {
-            response(res,200,true,result.command,"order review success")
+            response(res,200,true,result.data,"order review success")
         } catch (error) {
             response(res,404,false,error,"order cancel fail")
         }
