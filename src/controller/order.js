@@ -54,7 +54,7 @@ const OrderController = {
                 "billing_address": {
                     "address" : `${address}`
                 }
-            },"enabled_payments": ["gopay"],
+            },
             // "callbacks": {
             //     "finish": link
             // },
