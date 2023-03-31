@@ -90,9 +90,10 @@ const UsersController = {
         response(res, 200, false, (user.id),"login success")
     },verification: async(req,res,next) => {
         let {rows:[user]} = await ModelUser.findName(req.body.email)
-        // if(!user){
-        //     return response(res, 404, false, null," email not found")
-        // }
+        if(!user){
+            return response(res, 404, false, null," email not found")
+        }
+        console.log(user)
         const {otp} = req.body
         const data = {
             email : req.body.email
