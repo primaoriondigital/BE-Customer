@@ -188,7 +188,7 @@ const OrderController = {
         }
         const result = await ModelOrder.reviewOrder(data)
         try {
-            response(res,200,true,result.data,"order review success")
+            response(res,200,true,data,"order review success")
         } catch (error) {
             response(res,404,false,error,"order cancel fail")
         }
