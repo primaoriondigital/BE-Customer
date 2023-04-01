@@ -3,9 +3,9 @@ const ModelOrder = require("../model/order")
 const {v4: uuidv4} = require('uuid');
 const midtransClient = require('midtrans-client');
 let snap = new midtransClient.Snap({
-    isProduction : true,
-    serverKey : 'Mid-server-fSXfq48YsUrXRKaA_ZbPQgjy',
-    clientKey : 'Mid-client-gY8gmA1KcEZdl03l'
+    isProduction : false,
+    serverKey : 'SB-Mid-server-_cL8JNy6MGc-IOePF9J0amYW',
+    clientKey : 'SB-Mid-client-MmH0YcC1XzyHoQdZ'
 });
 
 const OrderController = {
