@@ -50,16 +50,17 @@ const UsersController = {
     }
     try {
         const result = await ModelUser.addUser(data)
-        if (result){
-            const validate = await email.send_mail(`${data.name}`,`${data.email}`,`${data.otp}`)
-            if(validate) {
-                console.log('menjalankan validate')
-            } else {
-                console.log('tidak menjalankan validate')
-            }
-            console.log(result)
-            response(res,200,true,data,"register success")
-        }
+        response(res,200,true,result,"register success")
+        // if (result){
+        //     const validate = await email.send_mail(`${data.name}`,`${data.email}`,`${data.otp}`)
+        //     if(validate) {
+        //         console.log('menjalankan validate')
+        //     } else {
+        //         console.log('tidak menjalankan validate')
+        //     }
+        //     console.log(result)
+        //     response(res,200,true,data,"register success")
+        // }
     } catch (err){
         console.log(err)
         response(res,404,false,err,"register fail")
@@ -104,6 +105,26 @@ const UsersController = {
         } else {
             return response(res, 404, false, null,"verification account fail")
         }
+        
+    },verificationWeb: async(req,res,next) => {
+        let {rows:[user]} = await ModelUser.findPhone(req.params.phone)
+        if(!user){
+            return response(res, 404, false, null," user not found")
+        } else {
+            const data = {
+                email : user.email
+            }
+            console.log(user)
+            const result = ModelUser.verif(data)
+            response(res,200,true,user.email,"verification account success")
+        }
+        // console.log(user)
+        // if (user.otp == otp) {
+        //     const result = await ModelUser.verif(data)
+        //     response(res,200,true,result,"verification account success")
+        // } else {
+        //     return response(res, 404, false, null,"verification account fail")
+        // }
         
     },getProfileDetail: async(req,res,next) => {
         try {
