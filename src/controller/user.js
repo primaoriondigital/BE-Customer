@@ -26,12 +26,11 @@ const UsersController = {
             }
             return result;
         }
-        const data1 = {
-            email : req.body.email,
-            phone : req.body.phone
-        }
-        let {rows:[user]} = await ModelUser.findName(data1)
-        if (user) {
+            // email1 : req.body.email,
+            // phone : req.body.phone
+        let {rows:[user]} = await ModelUser.findName(req.body.email)
+        let {rows:[user1]} = await ModelUser.findPhone(req.body.phone)
+        if (user || user1) {
             return response(res, 404, false, "Email/Phone already use", "Email/Phone already use");
           } 
         const password1 = req.body.password
