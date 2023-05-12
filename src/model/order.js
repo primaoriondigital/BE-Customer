@@ -167,7 +167,7 @@ const reviewOrder = (data) => {
 
 const findOrderCleanerName = (id) => {
     return new Promise((resolve, reject) => {
-        Pool.query(`SELECT *,"user".name as cleaner_name FROM "order" INNER JOIN "user" ON "user".id = "order".cleaner_id WHERE "order".order_id='${id}'`,(err,result)=>{
+        Pool.query(`SELECT *,"user".name as cleaner_name,"user".photo_user as cleaner_photo FROM "order" INNER JOIN "user" ON "user".id = "order".cleaner_id WHERE "order".order_id='${id}'`,(err,result)=>{
             if(!err){
                 resolve(result)
             } else {
@@ -177,5 +177,57 @@ const findOrderCleanerName = (id) => {
     })
 }
 
+// const uploadPhoto = (order_id,status
+//     ,photo
+//     ) => {
+//     // const {order_id,status,photo} = data
+//     return new Promise((resolve, reject) => {
+//         Pool.query(`INSERT INTO "review2" (order_id,status
+//             ,photo
+//             ) VALUES('${order_id}','${status}'
+//             ,'${photo}'
+//             )`,(err,result)=>{
+//             if(!err){
+//                 resolve(result)
+//             } else { 
+//                 reject(err)
+//             }
+//         })
+//     })
+// }
 
-module.exports = {addOrder,payOrder,readyToBook,Urgent,findOrder,writeCleaner,writeOrderDone,writeStatusCleaner,writeStatusArea,historyOrder,cancelOrder,reviewOrder,writeStatusRejectedCleaner,findOrderCleanerName}
+
+const uploadPhoto = (
+    data
+    // order_id,status
+    ) => {
+    const {order_id,status
+        // ,photo
+    } = data
+    return new Promise((resolve, reject) => {
+        Pool.query(`INSERT INTO "review2" (order_id,status
+            ) VALUES('${order_id}','${status}'
+            )`,(err,result)=>{
+            if(!err){
+                resolve(result)
+            } else { 
+                reject(err)
+            }
+        })
+    })
+}
+
+const uploadPhotoAlone = (photo) => {
+    return new Promise((resolve, reject) => {
+        Pool.query(`INSERT INTO "review2" (photo) VALUES('${photo}')`,(err,result)=>{
+            if(!err){
+                resolve(result)
+            } else { 
+                reject(err)
+            }
+        })
+    })
+}
+
+
+module.exports = {uploadPhotoAlone,uploadPhoto,addOrder,payOrder,readyToBook,Urgent,findOrder,writeCleaner,writeOrderDone,writeStatusCleaner,writeStatusArea,historyOrder,cancelOrder,reviewOrder,writeStatusRejectedCleaner,findOrderCleanerName}

@@ -13,6 +13,8 @@ app.use(morgan("dev"))
 app.use(bodyParser.json())
 
 app.use("/", mainRouter)
+app.use("/image", express.static('./Image'))
+
 app.all("*",(req,res,next) => {
   response(res,404,false,null,"404 Not Found")
 })

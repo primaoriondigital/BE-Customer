@@ -1,4 +1,6 @@
 const { response } = require("../middleware/common");
+const multer = require('multer')
+const sharp = require('sharp')
 const ModelOrder = require("../model/order")
 const {v4: uuidv4} = require('uuid');
 const midtransClient = require('midtrans-client');
@@ -7,6 +9,15 @@ let snap = new midtransClient.Snap({
     serverKey : 'SB-Mid-server-_cL8JNy6MGc-IOePF9J0amYW',
     clientKey : 'SB-Mid-client-MmH0YcC1XzyHoQdZ'
 });
+
+const upload = multer({
+    fileFilter(req, file, cb) {
+    if(!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+    return cb( new Error('Please upload a valid image file'))
+    }
+    cb(undefined, true)
+    }
+    })
 
 const OrderController = {
     insert: async (req,res,next) => {
@@ -211,6 +222,33 @@ const OrderController = {
             response(res,200,true,result.rows,"get order success")
         } catch (error) {
             response(res,404,false,error,"get order fail")
+        }
+    },Photo: async (req,res,next) => {
+        try {
+            // const Port = process.env.PORT
+            // const Host = process.env.HOST
+            // const photo = req.file.filename
+            // const uri = `http://${Host}:${Port}/image/${photo}`
+            const data = {
+            //     req.body.photo = uri
+            order_id : req.body.order_id,
+            status : req.body.status
+            }
+            const result = await ModelOrder.uploadPhoto(
+                data
+                // req.body
+                )
+            response(res,200,true,result,"get order success")
+        } catch (error) {
+            response(res,404,false,error,"get order fail")
+        }
+    },inputPhoto: async (req,res,next) => {
+        try {
+            await sharp(req.file.buffer).resize({ width: 250, height: 250 }).png().toFile(__dirname + `/images/${req.file.originalname}`)
+            res.status(201).send('Image uploaded succesfully')
+        } catch (error){
+            console.log(error)
+            res.status(400).send(error)
         }
     }
 }
