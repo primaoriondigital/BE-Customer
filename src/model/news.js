@@ -37,4 +37,16 @@ const getNewsDetailed = (id) => {
     })
 }
 
-module.exports = {addNews,getNews,getNewsDetailed}
+const deleteNews = (id) => {
+    return new Promise((resolve, reject) => {
+        Pool.query(`DELETE FROM "news" WHERE id=${id}`,(err,result)=>{
+            if(!err){
+                resolve(result)
+            } else {
+                reject(err)
+            }
+        })
+    })
+}
+
+module.exports = {addNews,getNews,getNewsDetailed,deleteNews}
