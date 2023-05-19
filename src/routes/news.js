@@ -11,5 +11,8 @@ router.post("/input",upload.single('image'),NewsController.insert)
 router.get("/detail/:id",NewsController.getDetail)
 router.get("/",NewsController.getAll)
 router.delete("/:id",NewsController.deleteNews)
+// router.put("/:id",NewsController.edit)
+router.put("/edit/:id",upload.single('image'),NewsController.edit2)
+
 
 module.exports = router

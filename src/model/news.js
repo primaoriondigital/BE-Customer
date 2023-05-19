@@ -39,7 +39,7 @@ const getNewsDetailed = (id) => {
 
 const deleteNews = (id) => {
     return new Promise((resolve, reject) => {
-        Pool.query(`DELETE FROM "news" WHERE id=${id}`,(err,result)=>{
+        Pool.query(`UPDATE "news" judul= WHERE id=${id}`,(err,result)=>{
             if(!err){
                 resolve(result)
             } else {
@@ -49,4 +49,52 @@ const deleteNews = (id) => {
     })
 }
 
-module.exports = {addNews,getNews,getNewsDetailed,deleteNews}
+const editNews = (data,id) => {
+    const {judul,isi,penulis,tanggal,photo} = data
+    return new Promise((resolve, reject) => {
+        Pool.query(`UPDATE "news" SET judul = '${judul}',isi = '${isi}',penulis = '${penulis}',tanggal = '${tanggal}',photo = '${photo}' WHERE id = ${id}`,(err,result)=>{
+            if(!err){
+                resolve(result)
+            } else { 
+                reject(err)
+            }
+        })
+    })
+}
+
+const editNews2 = (data, id) => {
+    const { judul, isi, penulis, photo } = data;
+    const updateFields = [];
+  
+    if (judul) {
+      updateFields.push(`judul = '${judul}'`);
+    }
+  
+    if (isi) {
+      updateFields.push(`isi = '${isi}'`);
+    }
+  
+    if (penulis) {
+      updateFields.push(`penulis = '${penulis}'`);
+    }
+  
+    if (photo) {
+      updateFields.push(`photo = '${photo}'`);
+    }
+  
+    const updateQuery = `UPDATE "news" SET ${updateFields.join(', ')} WHERE id = ${id}`;
+  
+    return new Promise((resolve, reject) => {
+      Pool.query(updateQuery, (err, result) => {
+        if (!err) {
+          resolve(result);
+        } else {
+          reject(err);
+        }
+      });
+    });
+  };
+  
+  
+
+module.exports = {addNews,getNews,getNewsDetailed,deleteNews,editNews2}

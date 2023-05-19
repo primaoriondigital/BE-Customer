@@ -3,6 +3,7 @@ const { response } = require("./src/middleware/common");
 require("dotenv").config();
 const bodyParser = require('body-parser')
 const morgan = require("morgan")
+const cors = require('cors')
 // const send_mail = require('./src/middleware/email2')
 
 const app = express()
@@ -11,6 +12,7 @@ const mainRouter = require("./src/routes/index")
 app.use(morgan("dev"))
 
 app.use(bodyParser.json())
+app.use(cors())
 
 app.use("/", mainRouter)
 app.use("/image", express.static('./Image'))
