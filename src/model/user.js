@@ -62,4 +62,17 @@ const findId = (data) => {
     })
 }
 
-module.exports = {findName,addUser,verif,findId,findPhone}
+const editPoint = (data) => {
+    const {id,point} = data
+    return new Promise((resolve, reject) => {
+        Pool.query(`UPDATE "user_customer" SET point = point + ${point} WHERE id = '${id}'`,(err,result)=>{
+            if(!err){
+                resolve(result)
+            } else { 
+                reject(err)
+            }
+        })
+    })
+}
+
+module.exports = {findName,addUser,verif,findId,findPhone,editPoint}

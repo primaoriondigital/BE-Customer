@@ -137,6 +137,25 @@ const UsersController = {
             response(res,404,false,error,"get profile fail")
         }
 
+    },putPoint: async(req,res,next) => {
+        try {
+            const data = {
+                id : req.params.id,
+                point : req.body.point
+            }
+            const result = await ModelUser.editPoint(data)
+            if (result) {
+                const data = {
+                    id: req.params.id
+                }
+                var updatedUser = await ModelUser.findId(data)
+            }
+            response(res,200,true,updatedUser.rows,"edit point success")
+        } catch (error) {
+            console.log(error)
+            response(res,404,false,error,"edit point fail")
+        }
+
     }
 }
 
