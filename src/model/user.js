@@ -75,4 +75,17 @@ const editPoint = (data) => {
     })
 }
 
-module.exports = {findName,addUser,verif,findId,findPhone,editPoint}
+const delUser = (data) => {
+    const {id} = data
+    return new Promise((resolve, reject) => {
+        Pool.query(`DELETE FROM "user_customer" WHERE id = '${id}'`,(err,result)=>{
+            if(!err){
+                resolve(result)
+            } else { 
+                reject(err)
+            }
+        })
+    })
+}
+
+module.exports = {findName,addUser,verif,findId,findPhone,editPoint,delUser}

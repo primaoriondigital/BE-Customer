@@ -8,6 +8,7 @@ router.post("/verification",UsersController.verification)
 router.get("/:id",UsersController.getProfileDetail)
 router.get("/verification-phone/:phone",UsersController.verificationWeb)
 router.put("/point/:id",UsersController.putPoint)
+router.delete("/:id",UsersController.deleteUser)
 
 
 module.exports = router;

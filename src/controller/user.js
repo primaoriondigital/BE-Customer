@@ -155,7 +155,23 @@ const UsersController = {
             console.log(error)
             response(res,404,false,error,"edit point fail")
         }
-
+    },deleteUser: async(req,res,next) => {
+        try {
+            const data = {
+                id : req.params.id
+            }
+            const result = await ModelUser.delUser(data)
+            if (result) {
+                const data = {
+                    id: req.params.id
+                }
+                var updatedUser = await ModelUser.findId(data)
+            }
+            response(res,200,true,updatedUser.rows,"edit point success")
+        } catch (error) {
+            console.log(error)
+            response(res,404,false,error,"edit point fail")
+        }
     }
 }
 
