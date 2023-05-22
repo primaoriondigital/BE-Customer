@@ -167,10 +167,10 @@ const UsersController = {
                 }
                 var updatedUser = await ModelUser.findId(data)
             }
-            response(res,200,true,updatedUser.rows,"edit point success")
+            response(res,200,true,updatedUser.rows,"delete user success")
         } catch (error) {
             console.log(error)
-            response(res,404,false,error,"edit point fail")
+            response(res,404,false,error,"delete user fail")
         }
     }
 }
