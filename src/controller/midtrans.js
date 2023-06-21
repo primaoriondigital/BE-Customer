@@ -32,6 +32,7 @@ const MidtransController = {
                     await ModelOrder.cancelOrder(req.params.order_id)
                 } else {
                     var message = "sudah membayar"
+                    // response(res,200,true,hasil2,message)
                     await ModelOrder.payOrder(req.params.order_id)
                     if (hasil2.service === 'Booking'){
                         await ModelOrder.readyToBook(req.params.order_id)
@@ -47,7 +48,7 @@ const MidtransController = {
             var message = ("silahkan mencoba membayar")
         }
         try {
-            response(res,200,true,hasil2,message)
+            response(res,200,true,{hasil2,result1},message)
         } catch (error) {
             response(res,404,false,error,"tidak ada percobaan pembayaran")
         }

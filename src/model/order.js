@@ -5,7 +5,7 @@ const addOrder = (data) => {
     return new Promise((resolve, reject) => {
         Pool.query(`INSERT INTO "order" (order_id,customer_id,payment_status,service,time,order_status,address,created_at,gross_amount,item_name,notes,voucher) VALUES('${order_id}','${customer_id}','Unpayment','${service}','${time}','Waiting for Payment','${address}',NOW(),'${gross_amount}','${item_name}','${notes}','${voucher}')`,(err,result)=>{
             if(!err){
-                resolve(result)
+                resolve("bisa masukin",result)
             } else { 
                 reject(err)
             }

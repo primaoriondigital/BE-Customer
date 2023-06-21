@@ -3,6 +3,8 @@ const bcrypt = require('bcryptjs');
 const {v4: uuidv4} = require('uuid');
 const {generateToken} = require('../middleware/auth')
 const ModelUser = require("../model/user")
+const axios = require('axios');
+// const fetch = require('node-fetch');
 const email = require('../middleware/email2')
 // import { send_mail } from "../middleware/email2";
 
@@ -172,7 +174,123 @@ const UsersController = {
             console.log(error)
             response(res,404,false,error,"delete user fail")
         }
+    },changePass: async(req,res,next) => {
+        try {
+            const data = {
+                phone : req.params.phone,
+                password : bcrypt.hashSync(req.body.password)
+            }
+            const result = await ModelUser.editPass(data)
+            if (result) {
+                // const data = {
+                //     id: req.params.id
+                // }
+                // var updatedUser = await ModelUser.findId(data)
+                response(res,200,true,result.command,"Change Password Success")
+            }
+            else {
+            response(res,404,false,user,"Tidak Ada Akun dengan Nomor Tersebut")
+            }
+            // response(res,200,true,user,"get user success")
+        } catch (error) {
+            console.log(error)
+            response(res,404,false,error,"Ini Error")
+        }
+    },checkPhone: async (req,res,next) => {
+        try {
+            let {rows:[user1]} = await ModelUser.findPhone(req.params.phone)
+            if (user1) {
+            const phone = req.params.phone;
+
+// Data dan header untuk POST request
+const data = {
+    content: ['Kilapin Apps'],
+    msisdn: `62${phone}`,
+    lang_code: 'en',
+    time_limit: '300'
+};
+const headers = {
+    accept: 'application/json',
+    'App-ID': 'b2d6dc1a-e725-4063-b764-1821de8d623e',
+    'API-Key': 'VGE74784/xZP9hENjU18ifDY0mLvuMuW',
+    'content-type': 'application/json'
+};
+try {
+    // Lakukan POST request ke endpoint lain
+    const response = await axios.post('https://api.verihubs.com/v1/whatsapp/otp/send', data, { headers });
+
+    // Kirim respons ke client
+    res.json(response.data);
+} catch (error) {
+    // Kirim error jika ada
+    res.status(500).json({ error: error.toString() });
+}
+            response(res,200,true,result,"Change Password Success")
+            } else {
+            response(res,404,false,user1,"Tidak Ada Akun dengan Nomor Tersebut")
+            }
+        } catch (error) {
+            response(res,404,false,error,"Ini Error")
+        }
+    }, checkOTP: async(req,res,next) => {
+        try {
+            const data = {
+                msisdn: `62${req.params.phone}`,
+                otp: req.params.otp
+            }
+
+            const headers = {
+                accept: 'application/json',
+                'App-ID': 'b2d6dc1a-e725-4063-b764-1821de8d623e',
+                'API-Key': 'VGE74784/xZP9hENjU18ifDY0mLvuMuW',
+                'content-type': 'application/json'
+            };
+            const result  = await axios.post('https://api.verihubs.com/v1/whatsapp/otp/verify', data, {headers})
+            // response(res,200,true,result,"result OKE")
+            res.json(result.data);
+
+            // const result = await 
+        } catch (error) {
+            response(res,404,false,error,"ini error guys")
+        }
+    }, changeProfile: async(req,res,next) => {
+        try {
+            var data = {
+                photo: req.body.photo,
+                id:req.params.id
+            }
+            const result = await ModelUser.putProfile(data)
+            if (result) {
+                var updatedUser = await ModelUser.findId(data.id)
+            }
+            response(res,200,true,updatedUser.row,"Change Password Success")
+        } catch (error) {
+            response(res,404,false,error,"ini error guys")
+        }
     }
 }
 
 exports.UsersController = UsersController;
+
+// const phone = req.params.phone;
+
+// // Data dan header untuk POST request
+// const data = {
+//     content: ['Kilapin Apps'],
+//     msisdn: `62${phone}`,
+//     lang_code: 'en',
+//     time_limit: '300'
+// };
+// const headers = {
+//     accept: 'application/json',
+//     'App-ID': 'b2d6dc1a-e725-4063-b764-1821de8d623e',
+//     'API-Key': 'VGE74784/xZP9hENjU18ifDY0mLvuMuW',
+//     'content-type': 'application/json'
+// };
+
+// try {
+//     // Lakukan POST request ke endpoint lain
+//     const response = await axios.post('https://api.verihubs.com/v1/whatsapp/otp/send', data, { headers });
+
+//     // Kirim respons ke client
+//     res.json(response.data);

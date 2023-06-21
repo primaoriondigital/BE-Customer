@@ -48,6 +48,7 @@ const OrderController = {
         }
         // const ini = `${order_id}`
         // const lanjut= console.log("ini lanjut")
+        const result = await ModelOrder.addOrder(data)
         const link = console.log("ini berhasil")
         const parameter = {
             "transaction_details": {
@@ -84,12 +85,11 @@ const OrderController = {
             // transaction redirect url
             const transactionRedirectUrl = transaction.redirect_url;
             console.log('transactionRedirectUrl:',transactionRedirectUrl);
-            response(res,200,true,{transactionRedirectUrl,transactionToken,data},"order success")
+            response(res,200,true,data,`${transactionRedirectUrl}`)
         })
         .catch((e)=>{
             console.log('Error occured:',e.message);
         });
-            const result =ModelOrder.addOrder(data)
             // const text = `"${result}+${transactionToken}+${transactionRedirectUrl}"`
             // response(res,200,true,result,"order success")
 

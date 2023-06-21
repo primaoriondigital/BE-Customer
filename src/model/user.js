@@ -88,4 +88,30 @@ const delUser = (data) => {
     })
 }
 
-module.exports = {findName,addUser,verif,findId,findPhone,editPoint,delUser}
+const editPass = (data) => {
+    const {phone,password} = data
+    return new Promise((resolve, reject) => {
+        Pool.query(`UPDATE "user_customer" SET password = '${password}' WHERE phone = ${phone}`,(err,result)=>{
+            if(!err){
+                resolve(result)
+            } else { 
+                reject(err)
+            }
+        })
+    })
+}
+
+const putProfile = (data) => {
+    return new Promise((resolve, reject) => {
+        const {photo,id} = data
+        Pool.query(`UPDATE "user_customer" SET photo_user = '${photo}' WHERE id = '${id}'`,(err,result)=>{
+            if(!err){
+                resolve(result)
+            } else { 
+                reject(err)
+            }
+        })
+    })
+}
+
+module.exports = {findName,addUser,verif,findId,findPhone,editPoint,delUser,editPass,putProfile}
