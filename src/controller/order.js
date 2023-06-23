@@ -4,6 +4,12 @@ const sharp = require('sharp')
 const ModelOrder = require("../model/order")
 const {v4: uuidv4} = require('uuid');
 const midtransClient = require('midtrans-client');
+const OrderMongo = require("../model/order_mongose")
+const mongoose = require('mongoose');
+mongoose.connect('mongodb+srv://kilapin:Ifvu1ovfqbhXFTRE@cluster0.oucnaua.mongodb.net/kilapin', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
 let snap = new midtransClient.Snap({
     isProduction : true,
     serverKey : 'Mid-server-fSXfq48YsUrXRKaA_ZbPQgjy',
@@ -48,6 +54,19 @@ const OrderController = {
         }
         // const ini = `${order_id}`
         // const lanjut= console.log("ini lanjut")
+        const input = new OrderMongo.Order({
+            user_id : customer_id,
+            booking_type : data.service,
+            status : 'Pending',
+            service_id : 1,
+            category_id : 2
+        })
+
+        const result1 = await input.save()
+        if (result1) {
+            console.log('bisa masuk mongo')
+        }
+
         const result = await ModelOrder.addOrder(data)
         const link = console.log("ini berhasil")
         const parameter = {
@@ -87,6 +106,7 @@ const OrderController = {
             console.log('transactionRedirectUrl:',transactionRedirectUrl);
             response(res,200,true,data,`${transactionRedirectUrl}`)
         })
+        .then
         .catch((e)=>{
             console.log('Error occured:',e.message);
         });

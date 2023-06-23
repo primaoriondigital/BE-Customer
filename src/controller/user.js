@@ -1,13 +1,19 @@
 const { response } = require("../middleware/common");
+const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const {v4: uuidv4} = require('uuid');
 const {generateToken} = require('../middleware/auth')
 const ModelUser = require("../model/user")
 const axios = require('axios');
+const user_mongo = require('../model/user_mongo')
 // const fetch = require('node-fetch');
 const email = require('../middleware/email2')
 // import { send_mail } from "../middleware/email2";
 
+mongoose.connect('mongodb+srv://kilapin:Ifvu1ovfqbhXFTRE@cluster0.oucnaua.mongodb.net/kilapin', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 const UsersController = {
     register: async (req,res,next) => {
@@ -51,17 +57,20 @@ const UsersController = {
     }
     try {
         const result = await ModelUser.addUser(data)
+        const newUser = new user_mongo({
+            name: data.name,
+            email: data.email,
+            password: data.password,
+            phone: data.phone,
+            role: 'Kilapin Customer'
+        })
+        const result2 = await newUser.save()
+        if (result2) {
+            console.log('bisa masuk mongo')
+        } else {
+            console.log('belum masuk mongo')
+        }
         response(res,200,true,result,"register success")
-        // if (result){
-        //     const validate = await email.send_mail(`${data.name}`,`${data.email}`,`${data.otp}`)
-        //     if(validate) {
-        //         console.log('menjalankan validate')
-        //     } else {
-        //         console.log('tidak menjalankan validate')
-        //     }
-        //     console.log(result)
-        //     response(res,200,true,data,"register success")
-        // }
     } catch (err){
         console.log(err)
         response(res,404,false,err,"register fail")
